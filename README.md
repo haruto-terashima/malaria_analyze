@@ -5,12 +5,12 @@
   graph2.pyではナイジェリアの感染者数データと気候データ（降水量、気温、湿度）の関係を調べた。
   
 # 使用技術
-　python
-  numpy 
-　pandas 
-　matplotlib 
-　seaborn 
-　scikit-learn 
+　python 3.11.13
+  numpy 2.3.3
+　pandas 2.3.3
+　matplotlib 3.10.6
+　seaborn 0.13.2
+　scikit-learn 1.7.2
 
 
 
