@@ -1,20 +1,26 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
 
+
+# マラリア感染者のデータを読み込む
 file_path = 'WHO_malaria_data.xlsx'
 df = pd.read_excel(file_path, header=2)
 df.to_csv("WHO_malaria_data.csv", index=False)
 
-
+# マラリアの推定感染者数のみを抽出し、数値型に変換
 df = df[df['IndicatorCode'] == 'MALARIA_EST_CASES']
 df['FactValueNumeric'] = pd.to_numeric(df['FactValueNumeric'], errors='coerce')
 
+#　欠損値の除去
 df = df.dropna(subset=['FactValueNumeric', 'Period', 'Location'])
 
+#　データに含まれる全ての年を取得
 all_years = sorted(df['Period'].unique())
 
-
+#　全期間のデータがそろってる国のみ抽出
 complete_countries = [
     country for country, group in df.groupby('Location')
     if set(group['Period']) == set(all_years)
@@ -23,6 +29,7 @@ complete_countries = [
 
 df = df[df['Location'].isin(complete_countries)]
 
+#　最新年の感染症が多い上位１０か国を取得
 latest_year = df['Period'].max()
 top_countries = (
     df[df['Period'] == latest_year]
@@ -33,7 +40,7 @@ top_countries = (
     .index.tolist()
 )
 
-
+#　１．折れ線グラフの作成
 plt.figure(figsize=(10,6))
 
 for country in top_countries:
@@ -50,7 +57,7 @@ plt.show()
 
 
 
-# ② 最新年の棒グラフ（今一番深刻な国）
+# ２．最新年の棒グラフ（今一番深刻な国）
 
 latest_data = (
     df[df['Period'] == latest_year]
@@ -70,7 +77,7 @@ plt.tight_layout()
 plt.show()
 
 
-# ③ 前年比増減率の折れ線グラフ
+# ３．前年比増減率の折れ線グラフ
 
 trend_df = df[df['Location'].isin(top_countries)].sort_values(['Location', 'Period'])
 
@@ -93,9 +100,8 @@ plt.tight_layout()
 plt.show()
 
 
-#クラスタ
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
+#　４．クラスタ
+
 time_series_df = df[df['Location'].isin(top_countries)].pivot_table(
     index='Location',
     columns='Period',
@@ -126,7 +132,7 @@ plt.show()
 print(time_series_df[['Cluster']])
 
 
-# ⑤ ナイジェリアとコンゴを除いた折れ線グラフ
+# ５．ナイジェリアとコンゴを除いた折れ線グラフ
 
 exclude_countries = ['Nigeria', 'Democratic Republic of the Congo']
 
