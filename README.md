@@ -12,8 +12,12 @@
 　seaborn 0.13.2
 　scikit-learn 1.7.2
 
-
-
+# 使用データ
+  気候データ　world bankのclimate change knowledge portal
+  https://climateknowledgeportal.worldbank.org/?utm_source=chatgpt.com
+  マラリア感染データ　WHO　Global Health Observatory（GHO）
+  https://www.who.int/data/gho/data/indicators/indicator-details/GHO/estimated-number-of-malaria-cases?utm_source=chatgpt.com
+  
 ## graph.py
 # 折れ線グラフ（トップ10感染者数国の2000年から2023年の推移）
 <img width="1014" height="672" alt="スクリーンショット 2025-11-23 235921" src="https://github.com/user-attachments/assets/7088dd96-370a-459d-9fb0-d4c51696241e" />
